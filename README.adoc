@@ -151,6 +151,7 @@ https://docs.confluent.io/current/installation/scripted-install.html
 ----
 sudo systemctl enable confluent-kafka-rest
 sudo systemctl start confluent-kafka-rest
+sudo systemctl status confluent-kafka-rest
 
 sudo systemctl enable confluent-control-center
 sudo systemctl start confluent-control-center
