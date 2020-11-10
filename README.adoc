@@ -2,10 +2,11 @@
 v1.0, 2020-11-10
 :example-caption!:
 :sectnums:
-:sectnumlevels: 3
+:sectnumlevels: 4
 
-== How to run apache kafka
-
+== Run apache kafka on windows
+[source]
+----
 D:\kafka_2.13-2.6.0\bin\windows\zookeeper-server-start.bat D:\kafka_2.13-2.6.0\config\zookeeper.properties
 
 xcopy D:\kafka_2.13-2.6.0\config\server.properties D:\kafka_2.13-2.6.0\config\server-1.properties
@@ -13,13 +14,14 @@ xcopy D:\kafka_2.13-2.6.0\config\server.properties D:\kafka_2.13-2.6.0\config\se
 
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-1.properties
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-2.properties
-
+----
 == Topics
-
+[source]
+----
 D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9093 --partitions 2 --replication-factor 2 --topic user-tracking
 
 D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9093 user-tracking
-
+----
 
 
 == Avro
@@ -35,3 +37,147 @@ java -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 === schema registry
 git clone https://github.com/confluentinc/schema-registry
 git checkout v5.2.0
+
+=== confluent
+
+[source]
+----
+systemctl stop firewalld
+systemctl disable firewalld
+yum update -y
+yum install java-11-openjdk-devel -y
+curl -O http://packages.confluent.io/archive/6.0/confluent-community-6.0.0.tar.gz
+tar xzf confluent-community-6.0.0.tar.gz
+
+vi ~/.bash_profile
+export CONFLUENT_HOME=<path-to-confluent>
+export PATH="${CONFLUENT_HOME}/bin:$PATH"
+source ~/.bash_profile
+
+https://docs.confluent.io/current/quickstart/cos-quickstart.html
+----
+
+==== instalation
+[source]
+----
+mkdir confluent
+cd confluent
+export CONFLUENT_HOME=$PWD
+export PATH="${CONFLUENT_HOME}/bin:$PATH"
+
+vi ~/.bash_profile
+export CONFLUENT_HOME=<path-to-confluent>
+export PATH="${CONFLUENT_HOME}/bin:$PATH"
+
+curl -L https://cnfl.io/cli | sh -s -- -b $CONFLUENT_HOME/bin
+----
+
+https://docs.confluent.io/current/installation/installing_cp/zip-tar.html
+
+==== ZooKeeper
+[source]
+./etc/kafka/zookeeper.properties
+----
+tickTime=2000
+dataDir=/var/lib/zookeeper/
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=zoo1:2888:3888
+server.2=zoo2:2888:3888
+server.3=zoo3:2888:3888
+autopurge.snapRetainCount=3
+autopurge.purgeInterval=24
+----
+
+==== Broker
+
+
+==== Docker
+===== Install docker compose
+https://docs.docker.com/compose/install/
+[source]
+----
+curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+
+
+git clone https://github.com/confluentinc/cp-all-in-one.git
+cd cp-all-in-one
+git checkout 6.0.0-post
+cd cp-all-in-one
+docker-compose up -d
+docker-compose ps
+----
+
+Confluent control center
+http://192.168.56.10:9021/
+http://localhost:9021/
+http://localhost:9021
+
+=== Confluent on Centos 7
+https://docs.confluent.io/current/installation/installing_cp/rhel-centos.html
+[source]
+----
+systemctl stop firewalld
+systemctl disable firewalld
+sudo yum install curl which -y
+sudo rpm --import https://packages.confluent.io/rpm/6.0/archive.key
+touch /etc/yum.repos.d/confluent.repo
+cat <<EOF > /etc/yum.repos.d/confluent.repo
+[Confluent.dist]
+name=Confluent repository (dist)
+baseurl=https://packages.confluent.io/rpm/6.0/7
+gpgcheck=1
+gpgkey=https://packages.confluent.io/rpm/6.0/archive.key
+enabled=1
+
+[Confluent]
+name=Confluent repository
+baseurl=https://packages.confluent.io/rpm/6.0
+gpgcheck=1
+gpgkey=https://packages.confluent.io/rpm/6.0/archive.key
+enabled=1
+EOF
+
+sudo yum clean all && sudo yum install confluent-platform -y
+or
+sudo yum clean all &&  sudo yum install confluent-community-2.13 -y
+----
+https://docs.confluent.io/current/installation/scripted-install.html
+[source]
+----
+sudo systemctl enable confluent-kafka-rest
+sudo systemctl start confluent-kafka-rest
+
+sudo systemctl enable confluent-control-center
+sudo systemctl start confluent-control-center
+sudo systemctl status confluent-control-center
+
+sudo systemctl enable confluent-kafka
+sudo systemctl start confluent-kafka
+sudo systemctl status confluent-kafka
+
+sudo systemctl enable confluent-kafka-connect
+sudo systemctl start confluent-kafka-connect
+
+sudo systemctl enable confluent-ksql
+sudo systemctl start confluent-ksql
+
+
+sudo systemctl enable confluent-schema-registry
+sudo systemctl start confluent-schema-registry
+sudo systemctl status confluent-schema-registry
+
+sudo systemctl enable confluent-zookeeper
+sudo systemctl start confluent-zookeeper
+----
+
+=== Start
+[source]
+----
+confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:latest
+confluent local services start
+----

@@ -24,3 +24,9 @@ hs_err_pid*
 
 .idea
 *.iml
+
+# Terraform
+.terraform
+*.info
+*.tfstate
+*.backup
