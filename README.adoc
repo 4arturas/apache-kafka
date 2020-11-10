@@ -23,7 +23,8 @@ D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --list --bootstrap-server local
 
 
 == Avro
-
+https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2
+https://github.com/simplesteph/kafka-avro-course
 === compile schema
 https://apache.mirror.serveriai.lt/avro/avro-1.10.0/java/avro-tools-1.10.0.jar
 set JAVA_HOME=%ProgramFiles%\Java\jdk1.7.0_79
