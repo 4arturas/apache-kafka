@@ -35,8 +35,13 @@ java -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 "%ProgramFiles%\Java\jdk1.8.0_25\bin\java" -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 
 === schema registry
+sudo yum install git -y
+sudo yum install java-11-openjdk-devel -y
+sudo yum install maven -y
 git clone https://github.com/confluentinc/schema-registry
+cd schema-registry]
 git checkout v5.2.0
+mvn package
 
 === confluent
 
@@ -149,31 +154,60 @@ sudo yum clean all &&  sudo yum install confluent-community-2.13 -y
 https://docs.confluent.io/current/installation/scripted-install.html
 [source]
 ----
-sudo systemctl enable confluent-kafka-rest
-sudo systemctl start confluent-kafka-rest
-sudo systemctl status confluent-kafka-rest
 
-sudo systemctl enable confluent-control-center
-sudo systemctl start confluent-control-center
-sudo systemctl status confluent-control-center
+# Start ZooKeeper
+sudo systemctl enable confluent-zookeeper
+sudo systemctl start confluent-zookeeper
+sudo systemctl status confluent-zookeeper
+
+# Start Kafka
+sudo systemctl enable confluent-server
+sudo systemctl start confluent-server
+sudo systemctl status confluent-server
 
 sudo systemctl enable confluent-kafka
 sudo systemctl start confluent-kafka
 sudo systemctl status confluent-kafka
 
-sudo systemctl enable confluent-kafka-connect
-sudo systemctl start confluent-kafka-connect
-
-sudo systemctl enable confluent-ksql
-sudo systemctl start confluent-ksql
-
-
 sudo systemctl enable confluent-schema-registry
 sudo systemctl start confluent-schema-registry
 sudo systemctl status confluent-schema-registry
 
-sudo systemctl enable confluent-zookeeper
-sudo systemctl start confluent-zookeeper
+
+
+sudo systemctl enable confluent-control-center
+sudo systemctl start confluent-control-center
+sudo systemctl status confluent-control-center
+
+sudo systemctl enable confluent-kafka-connect
+sudo systemctl start confluent-kafka-connect
+sudo systemctl status confluent-kafka-connect
+
+sudo systemctl enable confluent-kafka-rest
+sudo systemctl start confluent-kafka-rest
+sudo systemctl status confluent-kafka-rest
+
+sudo systemctl enable confluent-ksqldb
+sudo systemctl start confluent-ksqldb
+sudo systemctl status confluent-ksqldb
+
+
+
+
+sudo systemctl enable confluent-kafka-rest
+sudo systemctl start confluent-kafka-rest
+sudo systemctl status confluent-kafka-rest
+
+systemctl status confluent*
+
+
+
+
+
+
+
+
+
 ----
 
 === Start
