@@ -35,6 +35,50 @@ java -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 "%ProgramFiles%\Java\jdk1.8.0_25\bin\java" -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 
 === schema registry
+
+https://github.com/lensesio/fast-data-dev
+https://www.youtube.com/watch?v=O8T7AUxhoKo
+
+
+https://github.com/ackintosh/kafka-connect-colormeshop/blob/master/docker-compose.yml
+wget https://raw.githubusercontent.com/ackintosh/kafka-connect-colormeshop/master/docker-compose.yml
+docker-compose up kafka-cluster
+http://192.168.56.10:3030/
+
+ Create topic:
+
+ https://youtu.be/O8T7AUxhoKo?t=359
+ docker run --rm -it --net=host landoop/fast-data-dev bash
+
+ kafka-topics --create --topic demo-kafka-connect --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
+
+ Create connector
+[source]
+----
+name=file-stream-demo-distributed
+connector.class=org.apache.kafka.connect.file.FileStreamSourceConnector
+tasks.max=1
+file=demo-file.txt
+topic=demo-kafka-connect
+key.converter=org.apache.kafka.connect.json.JsonConverter
+key.converter.schemas.enable=true
+value.converter=org.apache.kafka.connect.json.JsonConverter
+value.converter.schemas.enable=true
+----
+[source]
+----
+http://192.168.56.10:3030/kafka-topics-ui/#/cluster/fast-data-dev/topic/n/demo-kafka-connect/
+
+docker ps
+docker exec -it <containerID> bash
+touch demo-file.txt
+echo "hi" >> demo-file.txt
+echo "ho" >> demo-file.txt
+echo "hu" >> demo-file.txt
+----
+
+
+
 sudo yum install git -y
 sudo yum install java-11-openjdk-devel -y
 sudo yum install maven -y
@@ -42,6 +86,16 @@ git clone https://github.com/confluentinc/schema-registry
 cd schema-registry]
 git checkout v5.2.0
 mvn package
+
+[source]
+----
+wget https://raw.githubusercontent.com/obsidiandynamics/kafdrop/master/docker-compose/kafka-kafdrop/docker-compose.yaml
+docker-compose up
+http://192.168.56.10:9000
+----
+
+
+
 
 === confluent
 

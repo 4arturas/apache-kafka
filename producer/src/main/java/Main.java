@@ -19,9 +19,18 @@ public class Main {
         EventGenerator eventGenerator = new EventGenerator();
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
+        props.put("bootstrap.servers", "INTERNAL://192.168.56.10:9092");
+//        props.put("bootstrap.servers", "192.168.56.10:29092");
+//        props.put("bootstrap.servers", "PLAINTEXT://192.168.56.10:9092");
+//        props.put("advertised.listeners", "PLAINTEXT://192.168.56.10:9092");
+//        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+        // producer acks
+        props.setProperty("acks", "1");
+        props.setProperty("retries", "3");
+        props.setProperty("linger.ms", "1");
 
         Producer<String, String> producer = new KafkaProducer<>(props);
 
