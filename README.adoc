@@ -4,6 +4,18 @@ v1.0, 2020-11-10
 :sectnums:
 :sectnumlevels: 4
 
+== Kafka
+
+###### Event-driven architecture:
+- Microservices
+- Serverless
+- FaaS
+- Streaming
+- Event Sourcing
+- CQRS
+
+
+
 == Run apache kafka on windows
 [source]
 ----
@@ -270,3 +282,138 @@ systemctl status confluent*
 confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:latest
 confluent local services start
 ----
+
+== Streaming
+
+=== Froud detection system
+[plantuml, diagram-classes, png]
+....
+@startuml
+title Froud detection system
+|UI|
+start
+:User \nMakes\nan order;
+|Backend|
+if (userId is present?) then (no)
+    |UI|
+    :No userId<
+    stop
+else (yes)
+    |Backend|
+    if ( # of items < 1000?) then (no)
+        |UI|
+        : # of items >= 1000<
+        stop
+    else (yes)
+        |Backend|
+    endif
+    |Backend|
+    if (amount < $10000?) then (no)
+        |UI|
+        : amount >= $10000<
+        stop
+    else (yes)
+        |UI|
+        : OK<
+        stop
+    endif
+
+endif
+@enduml
+....
+==== Traditional Design
+[plantuml, Payment-Service, png]
+....
+@startuml
+title Payment Service
+|Validation|
+    start
+    :$;
+|Fround Detection|
+    if ($) then (no)
+        |Data Base|
+        :persist KO;
+        |Validation|
+        :bad $<
+        stop
+    else (yes)
+        |Data Base|
+        :persist OK;
+        |Processing|
+        stop
+    endif
+@enduml
+....
+
+
+
+==== Streaming with Kafka
+
+[plantuml, Test, png]
+....
+partition PaymentService {
+    (*) --> "$ $ $"
+}
+partition KafkaCluster {
+
+    --> "payments"
+}
+partition FraudDetection {
+    --> "Consumer"
+
+    partition BusinessRules {
+        --> " #1"
+        --> " #2"
+        --> " #..."
+    }
+    note right: All rules\nmust be valid
+}
+partition FraudDetection  {
+    --> "Producer"
+}
+partition KafkaCluster {
+    --> "validated payments"
+}
+partition PaymentProcessor {
+--> "OK"
+}
+....
+==== Kafka Streams
+[plantuml, Kafka Streams, png]
+....
+partition TopicA {
+    start
+}
+partition KafkaStream {
+        - Consumer
+
+        partition topology {
+            note right: * topology=\nacyclic graph of sources,\nprocessors and sinks
+            - Filter
+            - Map
+            - Count
+            - StateStore
+            - Count
+        }
+        - Producer
+}
+partition TopicB {
+    stop
+}
+....
+=== Stream Topology
+[plantuml, Stream Topology, png]
+....
+|Consumer(Source)|
+start
+:Consumer;
+|Stream Processors|
+    :Filter;
+    :Map;
+    :Count;
+    :StateStore;
+    :Count;
+    :...;
+|Producer(Sink)|
+    :Producer;
+....
