@@ -39,7 +39,9 @@ D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --list --bootstrap-server local
 ----
 
 == Avro
-https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2
+++++
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+++++
 https://github.com/simplesteph/kafka-avro-course
 === compile schema
 https://apache.mirror.serveriai.lt/avro/avro-1.10.0/java/avro-tools-1.10.0.jar
@@ -63,8 +65,10 @@ http://localhost:8080
 ----
 
 https://github.com/lensesio/fast-data-dev
-https://www.youtube.com/watch?v=O8T7AUxhoKo
 
+++++
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=O8T7AUxhoKo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+++++
 [source]
 ----
 https://github.com/ackintosh/kafka-connect-colormeshop/blob/master/docker-compose.yml
