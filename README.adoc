@@ -401,7 +401,7 @@ partition TopicB {
     stop
 }
 ....
-=== Stream Topology
+==== Stream Topology
 [plantuml, Stream Topology, png]
 ....
 |Consumer(Source)|
