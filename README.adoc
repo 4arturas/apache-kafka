@@ -417,3 +417,27 @@ start
 |Producer(Sink)|
     :Producer;
 ....
+==== Stateless Operations
+
+link:https://kafka.apache.org/documentation/streams/developer-guide/dsl-api.html#stateless-transformations[Stateless Transformations @*kafka.apache.org*]
+
+- Branch
+- Filter
+- Inverse Filter
+- Map
+- FlatMap
+- Foreach
+- Peek
+- GroupBy
+- Merge
+
+==== Stateful Operations
+
+link:https://kafka.apache.org/documentation/streams/developer-guide/dsl-api.html#stateful-transformations[Stateful Transformations @*kafka.apache.org*]
+
+
+- Aggregation
+- Count
+- Joins
+- Windowing
+- Custom processors
