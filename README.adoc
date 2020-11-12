@@ -27,6 +27,9 @@ xcopy D:\kafka_2.13-2.6.0\config\server.properties D:\kafka_2.13-2.6.0\config\se
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-1.properties
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-2.properties
 ----
+=== Kafka Tool
+link:https://www.kafkatool.com/download.html[Kafka Tool]
+
 == Topics
 [source]
 ----
@@ -35,30 +38,40 @@ D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --create --bootstrap-server loc
 D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9093 user-tracking
 ----
 
-=== Kafka Tool
-link:https://www.kafkatool.com/download.html[Kafka Tool]
-
 == Avro
 https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2
 https://github.com/simplesteph/kafka-avro-course
 === compile schema
 https://apache.mirror.serveriai.lt/avro/avro-1.10.0/java/avro-tools-1.10.0.jar
+[source]
+----
 set JAVA_HOME=%ProgramFiles%\Java\jdk1.7.0_79
 cd D:\JAVA_PROJECTS\apache-kafka\src\main\java\schemas
 java -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 "%ProgramFiles%\Java\jdk1.8.0_25\bin\java" -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
+----
+=== Schema Registry
 
-=== schema registry
+link:https://medium.com/@shreeraman.ak/spark-kafka-and-schema-registry-part-2-af9e6c054125[simpliest schema registry]
+[source]
+----
+git clone https://github.com/Landoop/schema-registry-ui.git
+cd schema-registry-ui
+npm install
+npm start
+http://localhost:8080
+----
 
 https://github.com/lensesio/fast-data-dev
 https://www.youtube.com/watch?v=O8T7AUxhoKo
 
-
+[source]
+----
 https://github.com/ackintosh/kafka-connect-colormeshop/blob/master/docker-compose.yml
 wget https://raw.githubusercontent.com/ackintosh/kafka-connect-colormeshop/master/docker-compose.yml
 docker-compose up kafka-cluster
 http://192.168.56.10:3030/
-
+----
  Create topic:
 
  https://youtu.be/O8T7AUxhoKo?t=359
