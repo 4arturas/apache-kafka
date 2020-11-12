@@ -35,6 +35,8 @@ D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --create --bootstrap-server loc
 D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9093 user-tracking
 ----
 
+=== Kafka Tool
+link:https://www.kafkatool.com/download.html[Kafka Tool]
 
 == Avro
 https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2
