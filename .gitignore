@@ -30,3 +30,8 @@ hs_err_pid*
 *.info
 *.tfstate
 *.backup
+
+*.cache
+*.png
+.asciidoctor
+*.html
