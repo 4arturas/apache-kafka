@@ -14,7 +14,91 @@ v1.0, 2020-11-10
 - Event Sourcing
 - CQRS
 
+=== Event-driven architecture basic units
+- Message - is a basic unit of commutication(string, number, ... ) it is described as a generic interface which has no special intent
+- Event - is a message, it informs various listeners about something that has happend
+- Command - targeted action by having one to one connection between producer and comsumer(ordering something can be viewed as a command)
 
+[plantuml, MEC, png]
+....
+Message <|-- Event
+Message <|-- Command
+
+class Event {
+    listeners[] : Listener
+    informs( listener )
+}
+....
+
+
+=== Benefits of EDA
+- Decoupling - all the components are decoupled one of the other, just a classes in a programming languages.
+
+[plantuml, Decoupling, png]
+....
+title Decoupling
+ServiceA -> Broker
+Broker -> ServiceB
+ServiceB ->Broker
+Broker -> ServiceA
+ServiceA --> ServiceB : Forbidden
+ServiceB --> ServiceA : Forbidden
+....
+- Encapsulation - Events can be classified within different functional boundaries and they can be processed on the same boundaries(for example in ecommerse system we would have events related to analytics, payments, promotions, suggestions, authentication. There are clear boundaries between each type of event without having to worry about confusing them).
+
+[plantuml, Encapsulation, png]
+....
+Event <|-- analytics
+Event <|-- payments
+Event <|-- promotions
+Event <|-- suggestions
+Event <|-- authentication
+....
+
+- Optimization
+
+[plantuml, TraditionalSystem, png]
+....
+title Traditional System
+User -> System : user.notifyWhenInStock(item)
+System -> User : systm.notify(user)
+....
+
+
+[plantuml, Optimization, png]
+....
+title EDA
+User -> System : notifications_enabled
+System -> User : stock_updated
+....
+
+- Scalability
+
+[plantuml, TraditionalSystemScalability, png]
+....
+title Traditional System
+Event -> FroundDetectionSystem
+Event -> FroundDetectionSystem
+Event -> FroundDetectionSystem
+Event -> FroundDetectionSystem
+Event -> FroundDetectionSystem
+....
+[plantuml, Scalability, png]
+....
+title Traditional System
+Event -> FroundDetectionSystem1
+Event -> FroundDetectionSystem2
+Event -> FroundDetectionSystem3
+Event -> FroundDetectionSystem4
+Event -> FroundDetectionSystem5
+....
+
+=== EDA Drawbacks
+
+- Steap learning curve
+- Complexity
+- Loss of transactionality
+- Lineage (debugging system, events can be lost or corrupted, because applications ar losely coupled)
 
 == Apache Kafka on windows
 === Install
@@ -38,6 +122,46 @@ xcopy D:\kafka_2.13-2.6.0\config\server.properties D:\kafka_2.13-2.6.0\config\se
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-1.properties
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-2.properties
 ----
+
+== Confulent
+
+link:http://packages.confluent.io/archive/6.0/[Download *Confluent*]
+
+link:https://medium.com/@shreeraman.ak/spark-kafka-and-schema-registry-part-2-af9e6c054125[Instructions]
+
+=== Windows
+
+- Zookeeper
+[source]
+----
+D:/confluent-6.0.0/bin/windows/zookeeper-server-start D:/confluent-6.0.0/etc/kafka/zookeeper.properties
+----
+output
+[source]
+----
+Classpath is empty. Please build the project first e.g. by running ‘gradlew jarAll’
+----
+
+link:https://medium.com/@praveenkumarsingh/confluent-kafka-on-windows-how-to-fix-classpath-is-empty-cf7c31d9c787[Explanation on how to fix that]
+
+- Kafka
+[source]
+----
+D:/confluent-6.0.0/bin/windows/kafka-server-start D:/confluent-6.0.0/etc/kafka/server.properties
+----
+
+- Schema registry is not available for Windows
+
+[source]
+----
+D:/confluent-6.0.0/bin/windows/schema-registry not available
+----
+
+=== Linux
+
+TODO
+
+
 === Kafka Tool
 link:https://www.kafkatool.com/download.html[Kafka Tool]
 
@@ -126,7 +250,8 @@ echo "hu" >> demo-file.txt
 ----
 
 
-
+[source]
+----
 sudo yum install git -y
 sudo yum install java-11-openjdk-devel -y
 sudo yum install maven -y
@@ -134,6 +259,7 @@ git clone https://github.com/confluentinc/schema-registry
 cd schema-registry]
 git checkout v5.2.0
 mvn package
+----
 
 [source]
 ----
