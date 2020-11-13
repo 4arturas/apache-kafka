@@ -157,6 +157,16 @@ D:/confluent-6.0.0/bin/windows/kafka-server-start D:/confluent-6.0.0/etc/kafka/s
 D:/confluent-6.0.0/bin/windows/schema-registry not available
 ----
 
+link:https://medium.com/@shreeraman.ak/spark-kafka-and-schema-registry-part-2-af9e6c054125[simpliest schema registry]
+[source]
+----
+git clone https://github.com/Landoop/schema-registry-ui.git
+cd schema-registry-ui
+npm install
+npm start
+http://localhost:8080
+----
+
 === Linux
 
 TODO
@@ -192,16 +202,7 @@ java -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 "%ProgramFiles%\Java\jdk1.8.0_25\bin\java" -jar D:\avro-tools-1.10.0.jar compile schema user_schema.avsc .
 ----
 === Schema Registry
-==== Simpliest schema registry
-link:https://medium.com/@shreeraman.ak/spark-kafka-and-schema-registry-part-2-af9e6c054125[simpliest schema registry]
-[source]
-----
-git clone https://github.com/Landoop/schema-registry-ui.git
-cd schema-registry-ui
-npm install
-npm start
-http://localhost:8080
-----
+
 ==== Schema registry with docker-compose
 https://github.com/lensesio/fast-data-dev
 ++++
