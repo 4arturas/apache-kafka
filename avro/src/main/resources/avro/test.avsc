@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "namespace": "com.example.kafka.model",
+  "name": "Test",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    }
+  ]
+}

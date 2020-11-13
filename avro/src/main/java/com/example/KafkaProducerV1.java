@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.kafka.model.Test;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.kafka.clients.producer.Callback;
@@ -16,25 +17,22 @@ public class KafkaProducerV1
     public static void main(String[] args)
     {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
+//        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
+        props.put("bootstrap.servers", "localhost:9092");
         props.put("acks", "1");
         props.put("retries", "10");
         props.put("key.serializer", StringSerializer.class.getName());
         props.put("value.serializer", KafkaAvroSerializer.class.getName());
-        props.put("schema.registry.url", "http://127.0.0.1:8081");
+        props.put("schema.registry.url", "http://127.0.0.1:8080");
 
-        KafkaProducer<String, Customer> kafkaProducer = new KafkaProducer<String, Customer>(props);
-        String topic = "customer-avro";
-        Customer customer = Customer.newBuilder()
-                .setFirstName("Gogo")
-                .setLastName("Gugu")
-                .setAge(56)
-                .setHeight(190)
-                .setWeight(100)
-                .setAutomatedEmail(false)
-                .build();
+        KafkaProducer<String, Test> kafkaProducer = new KafkaProducer<String, Test>(props);
+        String topic = "test-avro";
 
-        ProducerRecord<String, Customer> producerRecord = new ProducerRecord<String, Customer>( topic, customer );
+
+        Test test = Test.newBuilder().setId("1").build();
+
+
+        ProducerRecord<String, Test> producerRecord = new ProducerRecord<String, Test>( topic, test );
 
         kafkaProducer.send(producerRecord, new Callback() {
             @Override
