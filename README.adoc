@@ -100,61 +100,64 @@ Event -> FroundDetectionSystem5
 - Loss of transactionality
 - Lineage (debugging system, events can be lost or corrupted, because applications ar losely coupled)
 
-== Apache Kafka on windows
-=== Install
+== Apache Kafka
+=== Windows
+==== Install
 link:https://www.apache.org/dyn/closer.cgi?path=/kafka/2.6.0/kafka_2.13-2.6.0.tgz[Downlaod]
 [source]
 ----
 tar -xzf kafka_2.13-2.6.0.tgz
 cd kafka_2.13-2.6.0
 ----
-=== Run
+==== Run
 [source]
 ----
 D:\kafka_2.13-2.6.0\bin\windows\zookeeper-server-start.bat D:\kafka_2.13-2.6.0\config\zookeeper.properties
 D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server.properties
-
-D:\kafka_2.13-2.6.0\bin\windows\zookeeper-server-start.bat D:\kafka_2.13-2.6.0\config\zookeeper.properties
-
-xcopy D:\kafka_2.13-2.6.0\config\server.properties D:\kafka_2.13-2.6.0\config\server-1.properties
-xcopy D:\kafka_2.13-2.6.0\config\server.properties D:\kafka_2.13-2.6.0\config\server-2.properties
-
-D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-1.properties
-D:\kafka_2.13-2.6.0\bin\windows\kafka-server-start.bat D:\kafka_2.13-2.6.0\config\server-2.properties
 ----
 
-== Confulent
+=== Confluent
+link:https://docs.confluent.io/current/quickstart/ce-quickstart.html[quick start]
 
-link:http://packages.confluent.io/archive/6.0/[Download *Confluent*]
-
-link:https://medium.com/@shreeraman.ak/spark-kafka-and-schema-registry-part-2-af9e6c054125[Instructions]
-
-=== Windows
-
-- Zookeeper
+./root/confluent-6.0.0/etc/kafka/server.properties
 [source]
 ----
-D:/confluent-6.0.0/bin/windows/zookeeper-server-start D:/confluent-6.0.0/etc/kafka/zookeeper.properties
+# Uncomment this property to allow remote access
+advertised.listeners=PLAINTEXT://192.168.56.10:9092
 ----
-output
+link:https://docs.confluent.io/current/confluent-cli/command-reference/local/services/index.html#confluent-local-services[confluent local services]
 [source]
 ----
-Classpath is empty. Please build the project first e.g. by running �gradlew jarAll�
+confluent local services start
+# The output is "Error: ZooKeeper failed to start". Despite this we run next commands
+confluent local services kafka start
+confluent local services ksql-server start
 ----
-
-link:https://medium.com/@praveenkumarsingh/confluent-kafka-on-windows-how-to-fix-classpath-is-empty-cf7c31d9c787[Explanation on how to fix that]
-
-- Kafka
 [source]
 ----
-D:/confluent-6.0.0/bin/windows/kafka-server-start D:/confluent-6.0.0/etc/kafka/server.properties
+kafka-topics --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
+kafka-topics --describe --topic quickstart-events --bootstrap-server 192.168.56.10:9092
+kafka-console-producer --topic quickstart-events --bootstrap-server 192.168.56.10:9092
+kafka-console-consumer --topic quickstart-events --from-beginning --bootstrap-server 192.168.56.10:9092
 ----
 
-- Schema registry is not available for Windows
-
+=== KAFDROP UI
 [source]
 ----
-D:/confluent-6.0.0/bin/windows/schema-registry not available
+git clone https://github.com/obsidiandynamics/kafdrop.git
+cd kafdrop
+mvn clean package -DskipTests
+java --add-opens=java.base/sun.nio.ch=ALL-UNNAMED -jar target/kafdrop-3.28.0-SNAPSHOT.jar --kafka.brokerConnect=localhost:9092
+http://192.168.56.10:9000/
+----
+
+== Schema registry
+[source]
+----
+git clone https://github.com/confluentinc/schema-registry.git
+cd schema-registry/
+git checkout v5.2.0
+mvn clean package -DskipTests
 ----
 
 link:https://medium.com/@shreeraman.ak/spark-kafka-and-schema-registry-part-2-af9e6c054125[simpliest schema registry]
@@ -430,3 +433,79 @@ link:https://kafka.apache.org/documentation/streams/developer-guide/dsl-api.html
 - Custom processors
 
 == KSQL
+
+=== Windowing
+
+* What is the average number of users visiting our website for hour or whtat is a total number of users which orders a product per day?
+
+==== Tumbling
+==== Hopping
+==== KSQL Statements
+===== Data definition language(DDL)
+- CREATE STREAM
+- CREATE TABLE
+- DROP STREAM
+- DROP TABLE
+- CREATE STREAM AS SELECT
+- CREATE TABLE AS SELECT
+
+===== Data manipulation language(DML)
+- SELECT
+- INSERT
+- CREATE STREAM AS SELECT
+- CREATE TABLE AS SELECT
+
+===== Alerting system
+- "payments" -> "warnings"
+- Transactions > 5/10(mins window)
+
+==== Installation KSQL
+[source]
+----
+git clone https://github.com/confluentinc/ksql.git
+cd ksql
+git checkout v.5.2.0
+git checkout 5.5.x
+mvn clean compile install -DskipTests
+
+mvn archetype:generate -X \
+    -DarchetypeGroupId=io.confluent.ksql \
+    -DarchetypeArtifactId=ksql-udf-quickstart \
+    -DarchetypeVersion=5.3.0
+
+mvn package
+vim config/ksql-server.properties
+bootstrap.servers=localhost:9092
+start zoopkeeper, broker(s), schema registry
+bin/ksql-server-start config/ksql-server.properties
+----
+
+
+== Kafdrop
+kafka-topics --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
+kafka-topics --create --topic quickstart-events --bootstrap-server localhost:9092
+bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
+
+http://192.168.56.10:9000/
+
+docker run --rm -it --net=host confluentinc/cp-kafka:5.5.0 bash
+kafka-topics --create --topic demo-kafka-connect --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
+
+kafka-topics --create --topic quickstart-events --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
+
+kafka-topics --create --topic quickstart-events --bootstrap-server sample-kafka:9092
+kafka-console-producer --topic quickstart-events --bootstrap-server 127.0.0.1:2181
+
+kafka-topics --bootstrap-server --zookeeper 127.0.0.1:2181 -create --partitions 3 --replication-factor 1 --topic streams-intro
+
+kafka-topics --create --topic streams-intro --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
+
+kafka-console-producer --broker-list sample-kafka:9092 --topic streams-intro --zookeeper 127.0.0.1:2181
+
+kafka-console-producer --zookeeper 127.0.0.1:2181 --topic streams-intro --property \"parse.key=true\" --property \"key.separator=:\"
+
+kafka-console-producer --zookeeper 127.0.0.1:2181 --topic streams-intro --property "parse.key=true" --property "key.separator=:"
+
+
+kafka-topics --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
+
