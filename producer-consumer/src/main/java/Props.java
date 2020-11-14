@@ -12,7 +12,8 @@ public class Props
     public static Properties properties_ForConsumer()
     {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
+//        props.put("bootstrap.servers", "localhost:9092");
+        props.put("bootstrap.servers", "192.168.56.10:9092");
 //        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
         props.put("group.id", "user-tracking-consumer");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -22,7 +23,8 @@ public class Props
 
     public static Properties properties_ForProducer() {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
+//        props.put("bootstrap.servers", "localhost:9092");
+        props.put("bootstrap.servers", "192.168.56.10:9092");
 //        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");

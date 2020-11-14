@@ -129,16 +129,50 @@ link:https://docs.confluent.io/current/confluent-cli/command-reference/local/ser
 [source]
 ----
 confluent local services start
-# The output is "Error: ZooKeeper failed to start". Despite this we run next commands
+# The output is "Error: ZooKeeper failed to start". Despite this run next commands
+confluent local services kafka-rest start
 confluent local services kafka start
-confluent local services ksql-server start
+confluent local services control-center start
+http://192.168.56.10:9021/
 ----
 [source]
 ----
+confluent local services connect start && confluent local services kafka start && confluent local services kafka-rest start && confluent local services ksql-server start
+http://192.168.56.10:9021/
+----
+
+[source]
+----
+confluent local services ksql-server start
+/root/confluent-6.0.0/bin/ksql-server-start /root/confluent-6.0.0/etc/ksqldb/ksql-server.properties
+/root/confluent-6.0.0/bin/ksql
+----
+[source]
+----
+confluent local services list start
+confluent local services schema-registry start
+----
+
+link:https://github.com/lensesio/schema-registry-ui[schema-registry-ui]
+[source]
+----
+git clone https://github.com/Landoop/schema-registry-ui.git
+cd schema-registry-ui
+npm install
+npm start
+http://192.168.56.10:8080
+----
+
+
+
+[source]
+----
+cd D:\kafka_2.13-2.6.0\bin\windows
 kafka-topics --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
 kafka-topics --describe --topic quickstart-events --bootstrap-server 192.168.56.10:9092
 kafka-console-producer --topic quickstart-events --bootstrap-server 192.168.56.10:9092
 kafka-console-consumer --topic quickstart-events --from-beginning --bootstrap-server 192.168.56.10:9092
+kafka-console-consumer --topic user-tracking --from-beginning --bootstrap-server 192.168.56.10:9092
 ----
 
 === KAFDROP UI
@@ -458,6 +492,25 @@ link:https://kafka.apache.org/documentation/streams/developer-guide/dsl-api.html
 ===== Alerting system
 - "payments" -> "warnings"
 - Transactions > 5/10(mins window)
+
+===== Confluent KSQL
+
+[source]
+----
+# execute
+/root/confluent-6.0.0/bin/ksql
+----
+[source]
+----
+ksql>
+SHOW STREAMS;
+SHOW TOPICS;
+# create new topic
+CREATE STREAM ksql_payments WITH ( KAFKA_TOPIC='payments', VALUE_FORMAT='AVRO' );
+CREATE TABLE warnings AS SELECT userId, COUNT(*) FROM ksql_payments WINDOW HOOPING ( SIZE 10 MINUTES, ADVANCE BY 1 MINUTE ) GROUP BY userId HAVING COUNT(*) > 5;
+PRINT 'payments';
+PRINT 'WARNINGS';
+----
 
 ==== Installation KSQL
 [source]
