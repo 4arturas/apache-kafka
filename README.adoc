@@ -139,7 +139,7 @@ D:/confluent-6.0.0/bin/windows/zookeeper-server-start D:/confluent-6.0.0/etc/kaf
 output
 [source]
 ----
-Classpath is empty. Please build the project first e.g. by running ‘gradlew jarAll’
+Classpath is empty. Please build the project first e.g. by running ï¿½gradlew jarAllï¿½
 ----
 
 link:https://medium.com/@praveenkumarsingh/confluent-kafka-on-windows-how-to-fix-classpath-is-empty-cf7c31d9c787[Explanation on how to fix that]
@@ -428,3 +428,5 @@ link:https://kafka.apache.org/documentation/streams/developer-guide/dsl-api.html
 - Joins
 - Windowing
 - Custom processors
+
+== KSQL

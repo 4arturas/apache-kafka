@@ -17,16 +17,7 @@ public class ProducerMain
 
         EventGenerator eventGenerator = new EventGenerator();
 
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-//        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-
-        // producer acks
-        props.setProperty("acks", "1");
-        props.setProperty("retries", "3");
-        props.setProperty("linger.ms", "1");
+        Properties props = Props.properties_ForProducer();
 
         Producer<String, String> producer = new KafkaProducer<>(props);
 

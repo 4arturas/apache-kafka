@@ -16,12 +16,7 @@ public class ConsumerMain
 
         SuggestionEngine suggestionEngine = new SuggestionEngine();
 
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-//        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
-        props.put("group.id", "user-tracking-consumer");
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        Properties props = Props.properties_ForConsumer();
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 
