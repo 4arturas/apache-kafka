@@ -35,4 +35,3 @@ hs_err_pid*
 *.png
 .asciidoctor
 *.html
-*.pdf
