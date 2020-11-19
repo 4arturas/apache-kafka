@@ -221,10 +221,10 @@ D:\kafka_2.13-2.6.0\bin\windows\kafka-topics.bat --list --bootstrap-server local
 ----
 
 == Avro
-++++
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-++++
-https://github.com/simplesteph/kafka-avro-course
+//++++
+//<iframe width="560" height="315" src="https://www.youtube.com/watch?v=_6HTHH1NCK0&list=PLsC0nE-wJ1I6uYSZomY4-WWeOuLeDEDAK&index=2" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+//++++
+// https://github.com/simplesteph/kafka-avro-course
 
 === Compile Avro schema
 
