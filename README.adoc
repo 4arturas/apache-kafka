@@ -535,30 +535,35 @@ bin/ksql-server-start config/ksql-server.properties
 
 
 == Kafdrop
+[source]
 kafka-topics --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
 kafka-topics --create --topic quickstart-events --bootstrap-server localhost:9092
 bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
 
 http://192.168.56.10:9000/
-
+[source]
 docker run --rm -it --net=host confluentinc/cp-kafka:5.5.0 bash
 kafka-topics --create --topic demo-kafka-connect --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
-
 kafka-topics --create --topic quickstart-events --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
 
+[source]
 kafka-topics --create --topic quickstart-events --bootstrap-server sample-kafka:9092
 kafka-console-producer --topic quickstart-events --bootstrap-server 127.0.0.1:2181
 
+[source]
 kafka-topics --bootstrap-server --zookeeper 127.0.0.1:2181 -create --partitions 3 --replication-factor 1 --topic streams-intro
 
+[source]
 kafka-topics --create --topic streams-intro --partitions 3 --replication-factor 1 --zookeeper 127.0.0.1:2181
 
+[source]
 kafka-console-producer --broker-list sample-kafka:9092 --topic streams-intro --zookeeper 127.0.0.1:2181
 
+[source]
 kafka-console-producer --zookeeper 127.0.0.1:2181 --topic streams-intro --property \"parse.key=true\" --property \"key.separator=:\"
 
+[source]
 kafka-console-producer --zookeeper 127.0.0.1:2181 --topic streams-intro --property "parse.key=true" --property "key.separator=:"
 
-
+[source]
 kafka-topics --create --topic quickstart-events --bootstrap-server 192.168.56.10:9092
-
