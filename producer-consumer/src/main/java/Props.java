@@ -5,15 +5,13 @@ import org.apache.kafka.streams.StreamsConfig;
 
 import java.util.Properties;
 
-import java.util.Properties;
-
 public class Props
 {
-    public static Properties properties_ForConsumer()
+    public static Properties properties_ForConsumer( final String bootstrapServers, final String topic )
     {
         Properties props = new Properties();
 //        props.put("bootstrap.servers", "localhost:9092");
-        props.put("bootstrap.servers", "192.168.56.10:9092");
+        props.put("bootstrap.servers", bootstrapServers );
 //        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
         props.put("group.id", "user-tracking-consumer");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -21,10 +19,10 @@ public class Props
         return props;
     }
 
-    public static Properties properties_ForProducer() {
+    public static Properties properties_ForProducer( final String bootstrapServers ) {
         Properties props = new Properties();
 //        props.put("bootstrap.servers", "localhost:9092");
-        props.put("bootstrap.servers", "192.168.56.10:9092");
+        props.put("bootstrap.servers", bootstrapServers );
 //        props.put("bootstrap.servers", "localhost:9093,localhost:9094");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");

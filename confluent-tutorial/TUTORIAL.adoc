@@ -1,0 +1,46 @@
+= Tutorial
+v1.0, 2020-11-14
+:toc:
+:example-caption!:
+:sectnums:
+:sectnumlevels: 7
+:icons: font
+:source-highlighter: prettify
+{set:sourcedir:files}
+
+== https://kafka-tutorials.confluent.io/kafka-console-consumer-producer-basics/kafka.html[Console Producer and Consumer Basics, no (de)serializers]
+=== Intialize the project
+[source]
+mkdir console-consumer-produer-basic && cd console-consumer-produer-basic
+
+=== Get Confluent platform
+
+.files/docker-compose.yml
+----
+include::files/docker-compose.yml[]
+----
+
+[source]
+docker-compose up -d
+
+=== Create topic
+docker-compose exec broker kafka-topics --create --topic example-topic --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
+
+=== Start a console consumer
+[source]
+docker-compose exec broker bash
+
+[source]
+kafka-console-consumer --topic example-topic --bootstrap-server broker:9092
+
+=== Produce your first records
+[source]
+kafka-console-producer --topic example-topic --broker-list broker:9092
+
+=== Read all records
+
+
+=== Start a new consumer to read all records
+[source]
+docker-compose exec broker bash
+kafka-console-consumer --topic example-topic --bootstrap-server broker:9092  --from-beginning

@@ -17,7 +17,7 @@ public class ProducerMain
 
         EventGenerator eventGenerator = new EventGenerator();
 
-        Properties props = Props.properties_ForProducer();
+        Properties props = Props.properties_ForProducer( "192.168.56.13:29092" );
 
         Producer<String, String> producer = new KafkaProducer<>(props);
 

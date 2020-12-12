@@ -16,13 +16,17 @@ public class ConsumerMain
 
         SuggestionEngine suggestionEngine = new SuggestionEngine();
 
-        Properties props = Props.properties_ForConsumer();
+        Properties props = Props.properties_ForConsumer("192.168.56.13:29092", "example-topic" );
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 
-        consumer.subscribe(asList("user-tracking"));
+        final String topic = "example-topic";
+//        final String topic = "user-tracking";
 
-        while (true) {
+        consumer.subscribe(asList( topic ));
+
+        while (true)
+        {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
             for (ConsumerRecord<String, String> record : records) {
